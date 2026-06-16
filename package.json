@@ -1,0 +1,24 @@
+{
+  "name": "turnos-app",
+  "private": true,
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "db:generate": "pnpm --filter @turnos/db db:generate",
+    "db:push": "pnpm --filter @turnos/db db:push",
+    "db:studio": "pnpm --filter @turnos/db db:studio",
+    "db:seed": "pnpm --filter @turnos/db db:seed",
+    "postinstall": "pnpm db:generate"
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "turbo": "^2.5.0",
+    "typescript": "^5.8.0"
+  },
+  "packageManager": "pnpm@11.6.0",
+  "engines": {
+    "node": ">=20"
+  }
+}
