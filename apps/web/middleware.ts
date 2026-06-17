@@ -6,6 +6,7 @@ export default function middleware(req: NextRequest): any {
   const isLoggedIn = !!req.cookies.get("authjs.session-token") || !!req.cookies.get("__Secure-authjs.session-token");
 
   const publicPaths = [
+    "/",
     "/login",
     "/register",
     "/api/auth",

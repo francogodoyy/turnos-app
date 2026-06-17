@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CheckCircle, XCircle } from "lucide-react";
 import { useToast } from "@/components/toast";
+import { ConfirmDialog } from "@/components/confirm-dialog";
 
 interface Props {
   appointmentId: string;
@@ -73,14 +74,21 @@ export function AppointmentActions({ appointmentId, status }: Props) {
           >
             <CheckCircle size={18} />
           </button>
-          <button
-            onClick={() => updateStatus("CANCELLED")}
-            disabled={loading}
-            className="rounded p-1 text-red-500 hover:bg-red-50 disabled:opacity-50"
-            title="Cancelar"
+          <ConfirmDialog
+            title="Cancelar turno"
+            message="¿Estás seguro de cancelar este turno?"
+            confirmLabel="Cancelar turno"
+            variant="danger"
+            onConfirm={() => updateStatus("CANCELLED")}
           >
-            <XCircle size={18} />
-          </button>
+            <button
+              disabled={loading}
+              className="rounded p-1 text-red-500 hover:bg-red-50 disabled:opacity-50"
+              title="Cancelar"
+            >
+              <XCircle size={18} />
+            </button>
+          </ConfirmDialog>
         </>
       )}
 
@@ -93,13 +101,20 @@ export function AppointmentActions({ appointmentId, status }: Props) {
           >
             Completar
           </button>
-          <button
-            onClick={() => updateStatus("CANCELLED")}
-            disabled={loading}
-            className="rounded px-2 py-0.5 text-xs font-medium text-red-500 hover:bg-red-50 disabled:opacity-50"
+          <ConfirmDialog
+            title="Cancelar turno"
+            message="El turno ya estaba confirmado. ¿Cancelarlo de todas formas?"
+            confirmLabel="Sí, cancelar"
+            variant="danger"
+            onConfirm={() => updateStatus("CANCELLED")}
           >
-            Cancelar
-          </button>
+            <button
+              disabled={loading}
+              className="rounded px-2 py-0.5 text-xs font-medium text-red-500 hover:bg-red-50 disabled:opacity-50"
+            >
+              Cancelar
+            </button>
+          </ConfirmDialog>
         </>
       )}
     </div>
