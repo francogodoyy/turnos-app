@@ -4,24 +4,11 @@ import { prisma } from "@turnos/db";
 import Link from "next/link";
 import { BackButton } from "@/components/back-button";
 import { AppointmentActions } from "@/components/appointment-actions";
+import { ClientAppointmentActions } from "@/components/client-appointment-actions";
 import { CalendarDays, Clock, User } from "lucide-react";
 import { TZ_ARGENTINA, toTzDate } from "@turnos/shared";
 
 export const dynamic = "force-dynamic";
-
-const STATUS_STYLES = {
-  PENDING: "bg-amber-50 border-amber-200 text-amber-700",
-  CONFIRMED: "bg-green-50 border-green-200 text-green-700",
-  CANCELLED: "bg-red-50 border-red-200 text-red-700",
-  COMPLETED: "bg-blue-50 border-blue-200 text-blue-700",
-} as const;
-
-const STATUS_LABELS = {
-  PENDING: "Pendiente",
-  CONFIRMED: "Confirmado",
-  CANCELLED: "Cancelado",
-  COMPLETED: "Completado",
-} as const;
 
 function isToday(date: Date) {
   const todayArg = toTzDate(new Date());
@@ -163,13 +150,10 @@ export default async function AppointmentsPage() {
                       status={apt.status}
                     />
                   ) : (
-                    <span
-                      className={`shrink-0 rounded-full border px-3 py-1 text-xs font-semibold ${
-                        STATUS_STYLES[apt.status as keyof typeof STATUS_STYLES]
-                      }`}
-                    >
-                      {STATUS_LABELS[apt.status as keyof typeof STATUS_LABELS]}
-                    </span>
+                    <ClientAppointmentActions
+                      appointmentId={apt.id}
+                      status={apt.status}
+                    />
                   )}
                 </div>
               </div>
