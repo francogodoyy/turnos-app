@@ -3,7 +3,7 @@
 > Plataforma SaaS de gestión de turnos construida con Next.js 15, Auth.js, Prisma y PostgreSQL. Proyecto de portafolio que demuestra arquitectura full-stack moderna.
 
 <p align="center">
-  <a href="https://turnos-app.vercel.app">Demo en vivo</a>
+  <a href="https://turnos-app-web.vercel.app/login">Demo en vivo</a>
   <span> · </span>
   <a href="mailto:demo@turnos.com">Profesional: demo@turnos.com / demo123</a>
   <span> · </span>
