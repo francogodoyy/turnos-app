@@ -30,3 +30,23 @@ export type LoginInput = z.infer<typeof LoginSchema>;
 export type RegisterInput = z.infer<typeof RegisterSchema>;
 export type AvailabilitySlotInput = z.infer<typeof AvailabilitySlot>;
 export type CreateAppointmentInput = z.infer<typeof CreateAppointmentSchema>;
+
+export const TZ_ARGENTINA = "America/Argentina/Buenos_Aires";
+export const UTC_OFFSET_ARG = -3; // hours
+
+export function toTzDate(date: Date, offsetHours: number = UTC_OFFSET_ARG): Date {
+  return new Date(date.getTime() + offsetHours * 60 * 60 * 1000);
+}
+
+export function todayRange(offsetHours: number = UTC_OFFSET_ARG): { start: Date; end: Date } {
+  const now = new Date();
+  const nowLocal = toTzDate(now, offsetHours);
+  const startLocal = new Date(nowLocal);
+  startLocal.setHours(0, 0, 0, 0);
+  const endLocal = new Date(startLocal);
+  endLocal.setDate(endLocal.getDate() + 1);
+  return {
+    start: toTzDate(startLocal, -offsetHours),
+    end: toTzDate(endLocal, -offsetHours),
+  };
+}

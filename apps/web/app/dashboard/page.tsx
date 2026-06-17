@@ -4,6 +4,7 @@ import { prisma, autoCompletePastAppointments } from "@turnos/db";
 import Link from "next/link";
 import { AppointmentActions } from "@/components/appointment-actions";
 import { CalendarCheck, Clock, AlertCircle, CheckCircle, CalendarDays } from "lucide-react";
+import { TZ_ARGENTINA, todayRange } from "@turnos/shared";
 
 export const dynamic = "force-dynamic";
 
@@ -15,13 +16,10 @@ async function getProfessional(session: any) {
 }
 
 async function getTodayCount(professionalId: string) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const tomorrow = new Date(today);
-  tomorrow.setDate(tomorrow.getDate() + 1);
+  const { start, end } = todayRange();
 
   return prisma.appointment.count({
-    where: { professionalId, date: { gte: today, lt: tomorrow } },
+    where: { professionalId, date: { gte: start, lt: end } },
   });
 }
 
@@ -145,6 +143,7 @@ export default async function DashboardPage() {
                           month: "short",
                           hour: "2-digit",
                           minute: "2-digit",
+                          timeZone: TZ_ARGENTINA,
                         })}
                       </p>
                     </div>
@@ -216,6 +215,7 @@ async function ClientAppointments({ userId }: { userId: string }) {
                   month: "long",
                   hour: "2-digit",
                   minute: "2-digit",
+                  timeZone: TZ_ARGENTINA,
                 })}
               </p>
             </div>

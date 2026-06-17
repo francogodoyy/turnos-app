@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma, autoCompletePastAppointments } from "@turnos/db";
 import { BackButton } from "@/components/back-button";
-import { CalendarDays, Clock } from "lucide-react";
+import { TZ_ARGENTINA, toTzDate, UTC_OFFSET_ARG } from "@turnos/shared";
 
 const STATUS_COLORS = {
   PENDING: "bg-amber-100 border-amber-300 text-amber-800",
@@ -16,18 +16,20 @@ const DAYS = ["DOM", "LUN", "MAR", "MIE", "JUE", "VIE", "SAB"];
 async function getWeekAppointments(professionalId: string) {
   await autoCompletePastAppointments();
 
-  const start = new Date();
-  start.setHours(0, 0, 0, 0);
-  const day = start.getDay();
-  start.setDate(start.getDate() - day);
-
-  const end = new Date(start);
-  end.setDate(end.getDate() + 7);
+  const now = new Date();
+  const nowArg = toTzDate(now);
+  const weekStartArg = new Date(nowArg);
+  weekStartArg.setDate(weekStartArg.getDate() - weekStartArg.getDay());
+  weekStartArg.setHours(0, 0, 0, 0);
+  const weekEndArg = new Date(weekStartArg);
+  weekEndArg.setDate(weekEndArg.getDate() + 7);
+  const weekStartUtc = toTzDate(weekStartArg, -UTC_OFFSET_ARG);
+  const weekEndUtc = toTzDate(weekEndArg, -UTC_OFFSET_ARG);
 
   return prisma.appointment.findMany({
     where: {
       professionalId,
-      date: { gte: start, lt: end },
+      date: { gte: weekStartUtc, lt: weekEndUtc },
     },
     include: { client: { select: { name: true } } },
     orderBy: { date: "asc" },
@@ -46,20 +48,28 @@ export default async function SchedulePage() {
 
   const appointments = await getWeekAppointments(professional.id);
 
-  const startOfWeek = new Date();
-  startOfWeek.setHours(0, 0, 0, 0);
-  startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+  const now = new Date();
+  const nowArg = toTzDate(now);
+  const weekStartArg = new Date(nowArg);
+  weekStartArg.setDate(weekStartArg.getDate() - weekStartArg.getDay());
+  weekStartArg.setHours(0, 0, 0, 0);
+
+  const nowArgToday = new Date();
+  const todayArgDate = toTzDate(nowArgToday);
 
   const days = DAYS.map((name, i) => {
-    const date = new Date(startOfWeek);
-    date.setDate(date.getDate() + i);
+    const dateArg = new Date(weekStartArg);
+    dateArg.setDate(dateArg.getDate() + i);
     const dayApps = appointments.filter(
-      (a) => a.date.getDay() === i
+      (a) => toTzDate(a.date).getDay() === i
     );
-    return { name, date, appointments: dayApps };
+    return { name, date: dateArg, appointments: dayApps };
   });
 
   const hours = Array.from({ length: 12 }, (_, i) => i + 8);
+
+  const weekEndDate = new Date(weekStartArg);
+  weekEndDate.setDate(weekEndDate.getDate() + 6);
 
   return (
     <div className="space-y-4">
@@ -69,17 +79,17 @@ export default async function SchedulePage() {
         <div>
           <h1 className="text-2xl font-bold text-gray-800">Semana</h1>
           <p className="text-sm text-gray-400">
-            {startOfWeek.toLocaleDateString("es-AR", {
+            {weekStartArg.toLocaleDateString("es-AR", {
               day: "numeric",
               month: "long",
+              timeZone: TZ_ARGENTINA,
             })}
             {" - "}
-            {new Date(
-              startOfWeek.getTime() + 6 * 24 * 60 * 60 * 1000
-            ).toLocaleDateString("es-AR", {
+            {weekEndDate.toLocaleDateString("es-AR", {
               day: "numeric",
               month: "long",
               year: "numeric",
+              timeZone: TZ_ARGENTINA,
             })}
           </p>
         </div>
@@ -92,9 +102,9 @@ export default async function SchedulePage() {
         <div className="grid min-w-[900px] grid-cols-[80px_repeat(7,1fr)]">
           <div className="border-b border-r bg-gray-50 p-2 text-xs font-medium text-gray-400" />
 
-          {days.map(({ name, date, appointments: dayApps }) => {
+          {days.map(({ name, date: dateArg, appointments: dayApps }) => {
             const isToday =
-              date.toDateString() === new Date().toDateString();
+              dateArg.toDateString() === todayArgDate.toDateString();
             return (
               <div
                 key={name}
@@ -103,24 +113,21 @@ export default async function SchedulePage() {
                 }`}
               >
                 <p>{name}</p>
-                <p className="text-lg font-bold">{date.getDate()}</p>
+                <p className="text-lg font-bold">{dateArg.getDate()}</p>
                 <p className="text-[10px] opacity-60">{dayApps.length} turnos</p>
               </div>
             );
           })}
 
           {hours.map((hour) => (
-            <>
-              <div
-                key={hour}
-                className="flex items-start justify-end border-b border-r p-2 text-xs text-gray-400"
-              >
+            <div key={hour} className="contents">
+              <div className="flex items-start justify-end border-b border-r p-2 text-xs text-gray-400">
                 {String(hour).padStart(2, "0")}:00
               </div>
 
-              {days.map(({ name, date, appointments: dayApps }) => {
+              {days.map(({ name, date: dateArg, appointments: dayApps }) => {
                 const apt = dayApps.find(
-                  (a) => a.date.getHours() === hour
+                  (a) => toTzDate(a.date).getHours() === hour
                 );
                 return (
                   <div
@@ -139,13 +146,15 @@ export default async function SchedulePage() {
                       >
                         <p className="font-semibold">{apt.client.name}</p>
                         <p className="text-[10px] opacity-70">
-                          {apt.date.toLocaleTimeString("es-AR", {
+                          {toTzDate(apt.date).toLocaleTimeString("es-AR", {
                             hour: "2-digit",
                             minute: "2-digit",
                           })}
                           {" - "}
-                          {new Date(
-                            apt.date.getTime() + apt.duration * 60000
+                          {toTzDate(
+                            new Date(
+                              apt.date.getTime() + apt.duration * 60000
+                            )
                           ).toLocaleTimeString("es-AR", {
                             hour: "2-digit",
                             minute: "2-digit",
@@ -156,7 +165,7 @@ export default async function SchedulePage() {
                   </div>
                 );
               })}
-            </>
+            </div>
           ))}
         </div>
       </div>

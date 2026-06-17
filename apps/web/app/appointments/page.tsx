@@ -5,6 +5,7 @@ import Link from "next/link";
 import { BackButton } from "@/components/back-button";
 import { AppointmentActions } from "@/components/appointment-actions";
 import { CalendarDays, Clock, User } from "lucide-react";
+import { TZ_ARGENTINA, toTzDate } from "@turnos/shared";
 
 export const dynamic = "force-dynamic";
 
@@ -23,11 +24,12 @@ const STATUS_LABELS = {
 } as const;
 
 function isToday(date: Date) {
-  const today = new Date();
-  return date.toDateString() === today.toDateString();
+  const todayArg = toTzDate(new Date());
+  const dateArg = toTzDate(date);
+  return dateArg.toDateString() === todayArg.toDateString();
 }
 function isPast(date: Date) {
-  return date < new Date();
+  return toTzDate(date) < toTzDate(new Date());
 }
 
 export default async function AppointmentsPage() {
@@ -128,6 +130,7 @@ export default async function AppointmentsPage() {
                             weekday: "long",
                             day: "numeric",
                             month: "long",
+                            timeZone: TZ_ARGENTINA,
                           })}
                         </span>
                         <span className="flex items-center gap-1">
@@ -135,6 +138,7 @@ export default async function AppointmentsPage() {
                           {aptDate.toLocaleTimeString("es-AR", {
                             hour: "2-digit",
                             minute: "2-digit",
+                            timeZone: TZ_ARGENTINA,
                           })}hs
                         </span>
                         {isProfessional && (
