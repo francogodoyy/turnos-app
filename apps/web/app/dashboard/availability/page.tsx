@@ -1,7 +1,7 @@
 "use client";
 
 import { DAYS_OF_WEEK } from "@turnos/shared";
-import { Trash2, Plus, Clock, Stethoscope, Phone, FileText, Save } from "lucide-react";
+import { Trash2, Plus, Clock, Stethoscope, Phone, FileText, Save, ImageIcon } from "lucide-react";
 import { BackButton } from "@/components/back-button";
 import { useToast } from "@/components/toast";
 import { useEffect, useState } from "react";
@@ -19,6 +19,7 @@ interface Profile {
   specialty: string | null;
   description: string | null;
   phone: string | null;
+  userImage: string | null;
 }
 
 const HOURS = Array.from({ length: 24 }, (_, i) =>
@@ -42,6 +43,7 @@ export default function AvailabilityPage() {
   const [specialty, setSpecialty] = useState("");
   const [description, setDescription] = useState("");
   const [phone, setPhone] = useState("");
+  const [image, setImage] = useState("");
   const [saving, setSaving] = useState(false);
   const [dayOfWeek, setDayOfWeek] = useState(1);
   const [startTime, setStartTime] = useState("09:00");
@@ -65,6 +67,7 @@ export default function AvailabilityPage() {
         setSpecialty(prof.specialty ?? "");
         setDescription(prof.description ?? "");
         setPhone(prof.phone ?? "");
+        setImage(prof.userImage ?? "");
       }
     }).finally(() => setLoading(false));
   }, []);
@@ -74,7 +77,7 @@ export default function AvailabilityPage() {
     const res = await fetch("/api/professionals/profile", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ specialty, description, phone }),
+      body: JSON.stringify({ specialty, description, phone, image }),
     });
     if (res.ok) {
       toast("Perfil actualizado", "success");
@@ -147,7 +150,7 @@ export default function AvailabilityPage() {
           Mi perfil profesional
         </h2>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
           <div>
             <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">
               Especialidad
@@ -177,6 +180,21 @@ export default function AvailabilityPage() {
               />
             </div>
           </div>
+
+            <div>
+              <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">
+                Foto de perfil
+              </label>
+              <div className="mt-1.5 flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100">
+                <ImageIcon size={16} className="text-gray-400" />
+                <input
+                  value={image}
+                  onChange={(e) => setImage(e.target.value)}
+                  placeholder="https://... (URL de la foto)"
+                  className="w-full bg-transparent text-sm outline-none"
+                />
+              </div>
+            </div>
 
           <div className="flex items-end">
             <button

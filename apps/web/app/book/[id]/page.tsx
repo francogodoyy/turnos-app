@@ -50,8 +50,12 @@ export default async function BookPage({
       <main className="mx-auto max-w-4xl px-4 py-8">
         <div className="mb-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 text-xl font-bold text-blue-600">
-              {professional.user.name.charAt(0)}
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-blue-100 text-xl font-bold text-blue-600 overflow-hidden">
+              {professional.user.image ? (
+                <img src={professional.user.image} alt="" className="h-full w-full object-cover" />
+              ) : (
+                professional.user.name.charAt(0)
+              )}
             </div>
             <div>
               <h1 className="text-2xl font-bold">

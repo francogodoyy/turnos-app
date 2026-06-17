@@ -66,8 +66,12 @@ export function ProfessionalsList({ professionals }: Props) {
               className="rounded-lg border bg-white p-6 shadow-sm transition hover:shadow-md"
             >
               <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-lg font-bold text-blue-600">
-                  {p.user.name.charAt(0)}
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-100 text-lg font-bold text-blue-600 overflow-hidden">
+                  {p.user.image ? (
+                    <img src={p.user.image} alt="" className="h-full w-full object-cover" />
+                  ) : (
+                    p.user.name.charAt(0)
+                  )}
                 </div>
                 <div>
                   <h3 className="font-semibold">{p.user.name}</h3>

@@ -13,7 +13,7 @@ export async function GET() {
 
   if (!user?.professional) return Response.json({ error: "No sos profesional" }, { status: 403 });
 
-  return Response.json(user.professional);
+  return Response.json({ ...user.professional, userImage: user.image });
 }
 
 export async function PATCH(req: NextRequest) {
@@ -28,7 +28,7 @@ export async function PATCH(req: NextRequest) {
   if (!user?.professional) return Response.json({ error: "No sos profesional" }, { status: 403 });
 
   const body = await req.json();
-  const { specialty, description, phone } = body;
+  const { specialty, description, phone, image } = body;
 
   const updated = await prisma.professional.update({
     where: { id: user.professional.id },
@@ -39,5 +39,12 @@ export async function PATCH(req: NextRequest) {
     },
   });
 
-  return Response.json(updated);
+  if (image !== undefined) {
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { image: image || null },
+    });
+  }
+
+  return Response.json({ ...updated, userImage: image ?? user.image });
 }
