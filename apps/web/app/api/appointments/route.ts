@@ -53,22 +53,6 @@ export async function POST(req: Request) {
   const endDate = new Date(appointmentDate);
   endDate.setMinutes(endDate.getMinutes() + professional.duration);
 
-  const existingClient = await prisma.appointment.findFirst({
-    where: {
-      clientId: session.user.id,
-      professionalId: parsed.data.professionalId,
-      date: { gte: new Date() },
-      status: { in: ["PENDING", "CONFIRMED"] },
-    },
-  });
-
-  if (existingClient) {
-    return Response.json(
-      { error: "Ya tenés un turno pendiente con este profesional" },
-      { status: 409 }
-    );
-  }
-
   const conflictingAppointment = await prisma.appointment.findFirst({
     where: {
       professionalId: parsed.data.professionalId,
