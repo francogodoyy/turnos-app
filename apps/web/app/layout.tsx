@@ -14,7 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className="min-h-screen bg-gray-50 antialiased">
+      <body className="min-h-screen bg-gray-50 antialiased dark:bg-gray-900">
         <Providers>
           <div className="animate-fade-in">{children}</div>
         </Providers>
