@@ -1,7 +1,7 @@
 import { prisma } from "@turnos/db";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
-import { Clock } from "lucide-react";
+import { Clock, Stethoscope } from "lucide-react";
 import BookingClient from "./booking-client";
 
 export const dynamic = "force-dynamic";
@@ -57,6 +57,12 @@ export default async function BookPage({
               <h1 className="text-2xl font-bold">
                 {professional.user.name}
               </h1>
+              {professional.specialty && (
+                <p className="flex items-center gap-1 text-sm text-gray-500">
+                  <Stethoscope size={14} />
+                  {professional.specialty}
+                </p>
+              )}
               {professional.description && (
                 <p className="text-gray-500">{professional.description}</p>
               )}

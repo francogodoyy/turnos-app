@@ -23,10 +23,11 @@ async function main() {
   const prof = await prisma.professional.upsert({
     where: { userId: demoProfessional.id },
     update: {},
-    create: {
-      userId: demoProfessional.id,
-      phone: "+54 11 5555-0123",
-      description: "Odontólogo general - Especialista en ortodoncia",
+      create: {
+        userId: demoProfessional.id,
+        phone: "+54 11 5555-0123",
+        specialty: "Odontólogo",
+        description: "Odontólogo general - Especialista en ortodoncia",
       address: "Av. Corrientes 1234, CABA",
       duration: 30,
     },

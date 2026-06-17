@@ -1,6 +1,6 @@
 import { prisma } from "@turnos/db";
 import Link from "next/link";
-import { Search, Calendar } from "lucide-react";
+import { Search, Calendar, Stethoscope } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -10,6 +10,7 @@ export default async function HomePage() {
       user: { select: { name: true, image: true } },
       _count: { select: { availability: true } },
     },
+    orderBy: { user: { name: "asc" } },
   });
 
   return (
@@ -73,7 +74,13 @@ export default async function HomePage() {
                   </div>
                   <div>
                     <h3 className="font-semibold">{p.user.name}</h3>
-                    <p className="flex items-center gap-1 text-sm text-gray-500">
+                    {p.specialty && (
+                      <p className="flex items-center gap-1 text-sm text-gray-500">
+                        <Stethoscope size={14} />
+                        {p.specialty}
+                      </p>
+                    )}
+                    <p className="flex items-center gap-1 text-sm text-gray-400">
                       <Calendar size={14} />
                       {p._count.availability > 0
                         ? `Disponible`

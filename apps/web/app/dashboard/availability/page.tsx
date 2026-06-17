@@ -1,7 +1,7 @@
 "use client";
 
 import { DAYS_OF_WEEK } from "@turnos/shared";
-import { Trash2, Plus, Clock } from "lucide-react";
+import { Trash2, Plus, Clock, Stethoscope, Phone, FileText, Save } from "lucide-react";
 import { BackButton } from "@/components/back-button";
 import { useToast } from "@/components/toast";
 import { useEffect, useState } from "react";
@@ -12,6 +12,13 @@ interface Slot {
   startTime: string;
   endTime: string;
   isActive: boolean;
+}
+
+interface Profile {
+  id: string;
+  specialty: string | null;
+  description: string | null;
+  phone: string | null;
 }
 
 const HOURS = Array.from({ length: 24 }, (_, i) =>
@@ -31,20 +38,51 @@ const DAY_COLORS = [
 export default function AvailabilityPage() {
   const { toast } = useToast();
   const [slots, setSlots] = useState<Slot[]>([]);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [specialty, setSpecialty] = useState("");
+  const [description, setDescription] = useState("");
+  const [phone, setPhone] = useState("");
+  const [saving, setSaving] = useState(false);
   const [dayOfWeek, setDayOfWeek] = useState(1);
   const [startTime, setStartTime] = useState("09:00");
   const [endTime, setEndTime] = useState("17:00");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/availability")
-      .then(async (r) => {
+    Promise.all([
+      fetch("/api/availability").then(async (r) => {
         if (r.status === 403) window.location.href = "/dashboard";
         return r.json();
-      })
-      .then(setSlots)
-      .finally(() => setLoading(false));
+      }),
+      fetch("/api/professionals/profile").then(async (r) => {
+        if (r.ok) return r.json();
+        return null;
+      }),
+    ]).then(([slots, prof]) => {
+      setSlots(slots);
+      if (prof) {
+        setProfile(prof);
+        setSpecialty(prof.specialty ?? "");
+        setDescription(prof.description ?? "");
+        setPhone(prof.phone ?? "");
+      }
+    }).finally(() => setLoading(false));
   }, []);
+
+  async function saveProfile() {
+    setSaving(true);
+    const res = await fetch("/api/professionals/profile", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ specialty, description, phone }),
+    });
+    if (res.ok) {
+      toast("Perfil actualizado", "success");
+    } else {
+      toast("Error al guardar el perfil", "error");
+    }
+    setSaving(false);
+  }
 
   async function addSlot() {
     const res = await fetch("/api/availability", {
@@ -100,6 +138,72 @@ export default function AvailabilityPage() {
           <p className="mt-1 text-2xl font-bold text-green-600">
             {coveredDays}/7
           </p>
+        </div>
+      </div>
+
+      <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <h2 className="mb-4 flex items-center gap-2 font-semibold text-gray-700">
+          <Stethoscope size={18} className="text-blue-500" />
+          Mi perfil profesional
+        </h2>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div>
+            <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">
+              Especialidad
+            </label>
+            <div className="mt-1.5 flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100">
+              <Stethoscope size={16} className="text-gray-400" />
+              <input
+                value={specialty}
+                onChange={(e) => setSpecialty(e.target.value)}
+                placeholder="Ej: Odontólogo, Psicólogo..."
+                className="w-full bg-transparent text-sm outline-none"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">
+              Teléfono
+            </label>
+            <div className="mt-1.5 flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100">
+              <Phone size={16} className="text-gray-400" />
+              <input
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="+54 11 5555-0123"
+                className="w-full bg-transparent text-sm outline-none"
+              />
+            </div>
+          </div>
+
+          <div className="flex items-end">
+            <button
+              onClick={saveProfile}
+              disabled={saving}
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow active:scale-95 disabled:opacity-50"
+            >
+              <Save size={18} />
+              {saving ? "Guardando..." : "Guardar perfil"}
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-4">
+          <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">
+            Descripción
+          </label>
+          <div className="mt-1.5 flex items-start gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100">
+            <FileText size={16} className="mt-1 shrink-0 text-gray-400" />
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Contale a tus clientes sobre tu experiencia..."
+              rows={2}
+              className="w-full resize-none bg-transparent text-sm outline-none"
+            />
+          </div>
         </div>
       </div>
 

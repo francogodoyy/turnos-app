@@ -79,6 +79,7 @@ model Professional {
   userId      String   @unique
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   phone       String?
+  specialty   String?
   description String?
   address     String?
   duration    Int      @default(30)
