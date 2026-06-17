@@ -1,6 +1,6 @@
 import { prisma } from "@turnos/db";
 import Link from "next/link";
-import { Search, Calendar, Stethoscope } from "lucide-react";
+import { ProfessionalsList } from "@/components/professionals-list";
 
 export const dynamic = "force-dynamic";
 
@@ -45,53 +45,7 @@ export default async function HomePage() {
           </p>
         </div>
 
-        {professionals.length === 0 ? (
-          <div className="rounded-lg border-2 border-dashed bg-white p-12 text-center">
-            <Search size={48} className="mx-auto text-gray-300" />
-            <p className="mt-4 text-lg text-gray-500">
-              No hay profesionales registrados aún
-            </p>
-            {professionals.length === 0 && (
-              <p className="mt-1 text-sm text-gray-400">
-                Si sos profesional,{" "}
-                <Link href="/register" className="text-blue-600 hover:underline">
-                  registrate acá
-                </Link>
-              </p>
-            )}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {professionals.map((p) => (
-              <Link
-                key={p.id}
-                href={`/book/${p.id}`}
-                className="rounded-lg border bg-white p-6 shadow-sm transition hover:shadow-md"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-lg font-bold text-blue-600">
-                    {p.user.name.charAt(0)}
-                  </div>
-                  <div>
-                    <h3 className="font-semibold">{p.user.name}</h3>
-                    {p.specialty && (
-                      <p className="flex items-center gap-1 text-sm text-gray-500">
-                        <Stethoscope size={14} />
-                        {p.specialty}
-                      </p>
-                    )}
-                    <p className="flex items-center gap-1 text-sm text-gray-400">
-                      <Calendar size={14} />
-                      {p._count.availability > 0
-                        ? `Disponible`
-                        : "Sin horarios cargados"}
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
+        <ProfessionalsList professionals={professionals} />
       </main>
     </div>
   );
