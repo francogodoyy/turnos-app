@@ -94,13 +94,20 @@ export function AppointmentActions({ appointmentId, status }: Props) {
 
       {status === "CONFIRMED" && (
         <>
-          <button
-            onClick={() => updateStatus("COMPLETED")}
-            disabled={loading}
-            className="rounded px-2 py-0.5 text-xs font-medium text-blue-600 hover:bg-blue-50 disabled:opacity-50"
+          <ConfirmDialog
+            title="Completar turno"
+            message="Marcar este turno como completado. ¿El cliente asistió?"
+            confirmLabel="Sí, completar"
+            variant="default"
+            onConfirm={() => updateStatus("COMPLETED")}
           >
-            Completar
-          </button>
+            <button
+              disabled={loading}
+              className="rounded px-2 py-0.5 text-xs font-medium text-blue-600 hover:bg-blue-50 disabled:opacity-50"
+            >
+              Completar
+            </button>
+          </ConfirmDialog>
           <ConfirmDialog
             title="Cancelar turno"
             message="El turno ya estaba confirmado. ¿Cancelarlo de todas formas?"
