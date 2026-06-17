@@ -5,6 +5,8 @@ import Link from "next/link";
 import { AppointmentActions } from "@/components/appointment-actions";
 import { CalendarCheck, Clock, AlertCircle, CheckCircle } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 async function getProfessional(session: any) {
   return prisma.professional.findUnique({
     where: { userId: session.user.id },

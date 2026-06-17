@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import BookingClient from "./booking-client";
 
+export const dynamic = "force-dynamic";
+
 export default async function BookPage({
   params,
 }: {

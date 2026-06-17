@@ -6,6 +6,8 @@ import { BackButton } from "@/components/back-button";
 import { AppointmentActions } from "@/components/appointment-actions";
 import { CalendarDays, Clock, User } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 const STATUS_STYLES = {
   PENDING: "bg-amber-50 border-amber-200 text-amber-700",
   CONFIRMED: "bg-green-50 border-green-200 text-green-700",
