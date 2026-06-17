@@ -101,7 +101,7 @@ export default async function SchedulePage() {
       <div className="relative">
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-white/80 to-transparent" />
         <div className="overflow-x-auto rounded-xl border bg-white shadow-sm">
-        <div className="grid min-w-[1000px] grid-cols-[80px_repeat(7,1fr)]">
+        <div className="grid min-w-[1200px] grid-cols-[80px_repeat(7,160px)]">
           <div className="border-b border-r bg-gray-50 p-2 text-xs font-medium text-gray-400" />
 
           {days.map(({ name, date: dateArg, appointments: dayApps }) => {
