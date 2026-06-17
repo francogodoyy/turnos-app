@@ -3,7 +3,7 @@
 > Plataforma SaaS de gestión de turnos construida con Next.js 15, Auth.js, Prisma y PostgreSQL. Proyecto de portafolio que demuestra arquitectura full-stack moderna.
 
 <p align="center">
-  <a href="https://turnos-app.vercel.app">🌐 Demo en vivo</a>
+  <a href="https://turnos-app.vercel.app">Demo en vivo</a>
   <span> · </span>
   <a href="mailto:demo@turnos.com">Profesional: demo@turnos.com / demo123</a>
   <span> · </span>
@@ -14,7 +14,7 @@
 
 ---
 
-## ✨ Funcionalidades
+##  Funcionalidades
 
 | Área | Detalle |
 |------|---------|
@@ -28,7 +28,7 @@
 | **Modo oscuro** | Toggle con persistencia en localStorage |
 | **Emails** | Confirmación al reservar y recordatorio de turnos del día siguiente |
 
-## 🧱 Stack Tecnológico
+##  Stack Tecnológico
 
 ```
 Frontend     Next.js 15 (App Router) + React 19 + Tailwind CSS 3
@@ -42,7 +42,7 @@ Emails       Resend
 Tests        Vitest + Playwright
 ```
 
-## 🏗️ Arquitectura
+##  Arquitectura
 
 ```
 turnos-app/
@@ -82,7 +82,7 @@ User ──→ Professional ──→ Availability
 - `Availability` define franjas horarias semanales (día, hora inicio, hora fin)
 - `Appointment` vincula cliente + profesional en una fecha y hora con estado
 
-## 🚀 Cómo empezar
+##  Cómo empezar
 
 ```bash
 # Requisitos: Node.js >= 20, pnpm >= 9
@@ -114,7 +114,7 @@ pnpm dev
 | Cliente | cliente@demo.com | demo123 |
 | Admin | admin@turnos.com | demo123 |
 
-## 🌐 Deploy en Vercel
+##  Deploy en Vercel
 
 1. Conectá tu repo de GitHub a Vercel
 2. Seteá **Root Directory** → `apps/web`
@@ -124,7 +124,7 @@ pnpm dev
 > **Nota**: Las migraciones deben aplicarse manualmente post-deploy:
 > `npx prisma migrate deploy` apuntando a la DB de producción.
 
-## 📸 Capturas de pantalla
+##  Capturas de pantalla
 
 > *(Reemplazá con capturas reales de tu deploy)*
 
@@ -142,6 +142,6 @@ pnpm dev
 - **Zona horaria Argentina**: Fechas en UTC, se muestran en `America/Argentina/Buenos_Aires`.
 - **Auto-reserva permitida**: Los clientes pueden reservar todos los turnos futuros que quieran mientras no se superpongan.
 
-## 📄 Licencia
+##  Licencia
 
-MIT
+Franco Godoy
