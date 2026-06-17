@@ -1,12 +1,15 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Clock } from "lucide-react";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [error, setError] = useState("");
+  const registered = searchParams.get("registered") === "pro";
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -22,7 +25,8 @@ export default function LoginPage() {
     if (res?.error) {
       setError("Email o contraseña inválidos");
     } else {
-      router.push("/dashboard");
+      const redirectTo = registered ? "/dashboard/availability" : "/dashboard";
+      router.push(redirectTo);
       router.refresh();
     }
   }
@@ -34,6 +38,18 @@ export default function LoginPage() {
         className="w-full max-w-sm space-y-4 rounded-lg border bg-white p-8 shadow-sm"
       >
         <h1 className="text-2xl font-bold">Iniciar sesión</h1>
+
+        {registered && (
+          <div className="flex items-start gap-3 rounded-lg border border-blue-200 bg-blue-50 p-4">
+            <Clock size={20} className="mt-0.5 shrink-0 text-blue-500" />
+            <div className="text-sm text-blue-800">
+              <p className="font-medium">Registrado como profesional</p>
+              <p className="mt-1 text-blue-600">
+                Configurá tu disponibilidad horaria para empezar a recibir turnos
+              </p>
+            </div>
+          </div>
+        )}
 
         {error && (
           <p className="rounded bg-red-50 p-2 text-sm text-red-600">{error}</p>
@@ -74,5 +90,13 @@ export default function LoginPage() {
         </p>
       </form>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   );
 }

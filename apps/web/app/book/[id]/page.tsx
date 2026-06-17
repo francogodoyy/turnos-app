@@ -1,6 +1,7 @@
 import { prisma } from "@turnos/db";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
+import { Clock } from "lucide-react";
 import BookingClient from "./booking-client";
 
 export const dynamic = "force-dynamic";
@@ -17,11 +18,16 @@ export default async function BookPage({
     where: { id },
     include: {
       user: { select: { name: true, email: true, image: true } },
-      availability: { where: { isActive: true }, orderBy: { dayOfWeek: "asc" } },
+      availability: {
+        where: { isActive: true },
+        orderBy: { dayOfWeek: "asc" },
+      },
     },
   });
 
   if (!professional) notFound();
+
+  const hasAvailability = professional.availability.length > 0;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -61,11 +67,23 @@ export default async function BookPage({
           </div>
         </div>
 
-        <BookingClient
-          professionalId={professional.id}
-          duration={professional.duration}
-          availability={professional.availability}
-        />
+        {hasAvailability ? (
+          <BookingClient
+            professionalId={professional.id}
+            duration={professional.duration}
+            availability={professional.availability}
+          />
+        ) : (
+          <div className="rounded-xl border-2 border-dashed bg-white p-12 text-center shadow-sm">
+            <Clock size={48} className="mx-auto text-gray-300" />
+            <h2 className="mt-4 text-lg font-semibold text-gray-500">
+              Sin disponibilidad por ahora
+            </h2>
+            <p className="mt-1 text-sm text-gray-400">
+              Este profesional aún no cargó sus horarios de atención
+            </p>
+          </div>
+        )}
       </main>
     </div>
   );

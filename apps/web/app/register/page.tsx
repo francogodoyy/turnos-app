@@ -29,7 +29,8 @@ export default function RegisterPage() {
       return;
     }
 
-    router.push("/login");
+    const role = form.get("role") as string;
+    router.push(role === "PROFESSIONAL" ? "/login?registered=pro" : "/login");
   }
 
   return (
