@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AppointmentActions } from "@/components/appointment-actions";
 import { CalendarCheck, Clock, AlertCircle, CheckCircle, CalendarDays } from "lucide-react";
 import { TZ_ARGENTINA, todayRange } from "@turnos/shared";
+import { sendTomorrowReminders } from "@/lib/email";
 
 export const dynamic = "force-dynamic";
 
@@ -41,6 +42,7 @@ export default async function DashboardPage() {
 
   if (isProfessional) {
     await autoCompletePastAppointments();
+    await sendTomorrowReminders().catch(() => {});
     const professional = await getProfessional(session);
     if (!professional) redirect("/login");
 

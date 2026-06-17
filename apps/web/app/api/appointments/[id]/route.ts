@@ -1,5 +1,7 @@
 import { prisma } from "@turnos/db";
 import { auth } from "@/auth";
+import { TZ_ARGENTINA } from "@turnos/shared";
+import { sendConfirmation } from "@/lib/email";
 
 export async function PATCH(
   req: Request,
@@ -34,7 +36,35 @@ export async function PATCH(
   const updated = await prisma.appointment.update({
     where: { id },
     data: { status },
+    include: {
+      client: { select: { name: true, email: true } },
+      professional: {
+        include: { user: { select: { name: true } } },
+      },
+    },
   });
+
+  if (status === "CONFIRMED") {
+    sendConfirmation({
+      email: updated.client.email!,
+      clientName: updated.client.name!,
+      professionalName: updated.professional.user.name!,
+      specialty: updated.professional.specialty,
+      date: updated.date.toLocaleDateString("es-AR", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        timeZone: TZ_ARGENTINA,
+      }),
+      time: updated.date.toLocaleTimeString("es-AR", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+        timeZone: TZ_ARGENTINA,
+      }),
+      duration: updated.duration,
+    }).catch(() => {});
+  }
 
   return Response.json(updated);
 }

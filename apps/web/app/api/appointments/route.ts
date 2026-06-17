@@ -1,6 +1,7 @@
 import { prisma } from "@turnos/db";
 import { auth } from "@/auth";
-import { CreateAppointmentSchema } from "@turnos/shared";
+import { CreateAppointmentSchema, TZ_ARGENTINA } from "@turnos/shared";
+import { sendConfirmation } from "@/lib/email";
 
 export async function GET() {
   const session = await auth();
@@ -43,6 +44,7 @@ export async function POST(req: Request) {
 
   const professional = await prisma.professional.findUnique({
     where: { id: parsed.data.professionalId },
+    include: { user: { select: { name: true } } },
   });
 
   if (!professional) {
@@ -80,6 +82,26 @@ export async function POST(req: Request) {
       notes: parsed.data.notes,
     },
   });
+
+  sendConfirmation({
+    email: session.user.email!,
+    clientName: session.user.name!,
+    professionalName: professional.user?.name ?? "Profesional",
+    specialty: professional.specialty,
+    date: appointmentDate.toLocaleDateString("es-AR", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      timeZone: TZ_ARGENTINA,
+    }),
+    time: appointmentDate.toLocaleTimeString("es-AR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+      timeZone: TZ_ARGENTINA,
+    }),
+    duration: professional.duration,
+  }).catch(() => {});
 
   return Response.json(appointment, { status: 201 });
 }
