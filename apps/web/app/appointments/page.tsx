@@ -138,11 +138,12 @@ export default async function AppointmentsPage({
                           </span>
                           <span className="flex items-center gap-1">
                             <Clock size={14} />
-                            {aptDate.toLocaleTimeString("es-AR", {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                              timeZone: TZ_ARGENTINA,
-                            })}hs
+                          {aptDate.toLocaleTimeString("es-AR", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
+                            timeZone: TZ_ARGENTINA,
+                          })}hs
                           </span>
                           {isProfessional && (
                             <span className="flex items-center gap-1">

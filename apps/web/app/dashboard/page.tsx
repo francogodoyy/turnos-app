@@ -143,6 +143,7 @@ export default async function DashboardPage() {
                           month: "short",
                           hour: "2-digit",
                           minute: "2-digit",
+                          hour12: false,
                           timeZone: TZ_ARGENTINA,
                         })}
                       </p>
@@ -215,6 +216,7 @@ async function ClientAppointments({ userId }: { userId: string }) {
                   month: "long",
                   hour: "2-digit",
                   minute: "2-digit",
+                  hour12: false,
                   timeZone: TZ_ARGENTINA,
                 })}
               </p>
