@@ -1,9 +1,9 @@
-import { auth } from "@/auth";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export default auth((req): any => {
+export default function middleware(req: NextRequest): any {
   const { pathname } = req.nextUrl;
-  const isLoggedIn = !!req.auth;
+  const isLoggedIn = !!req.cookies.get("authjs.session-token") || !!req.cookies.get("__Secure-authjs.session-token");
 
   const publicPaths = [
     "/login",
@@ -26,7 +26,7 @@ export default auth((req): any => {
   }
 
   return NextResponse.next();
-});
+};
 
 export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
