@@ -1,9 +1,9 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { prisma } from "@turnos/db";
+import { prisma, autoCompletePastAppointments } from "@turnos/db";
 import Link from "next/link";
 import { AppointmentActions } from "@/components/appointment-actions";
-import { CalendarCheck, Clock, AlertCircle, CheckCircle } from "lucide-react";
+import { CalendarCheck, Clock, AlertCircle, CheckCircle, CalendarDays } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -42,6 +42,7 @@ export default async function DashboardPage() {
   const isProfessional = session.user.role === "PROFESSIONAL";
 
   if (isProfessional) {
+    await autoCompletePastAppointments();
     const professional = await getProfessional(session);
     if (!professional) redirect("/login");
 

@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { CalendarDays, Clock, LayoutDashboard } from "lucide-react";
+import { CalendarDays, Clock, LayoutDashboard, CalendarRange } from "lucide-react";
 import { SignOutButton } from "@/components/sign-out";
 
 export default async function DashboardLayout({
@@ -33,13 +33,22 @@ export default async function DashboardLayout({
               <span className="hidden sm:inline">Dashboard</span>
             </Link>
             {isProfessional && (
-              <Link
-                href="/dashboard/availability"
-                className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-gray-600 transition-colors hover:bg-blue-50 hover:text-blue-600"
-              >
-                <Clock size={16} />
-                <span className="hidden sm:inline">Disponibilidad</span>
-              </Link>
+              <>
+                <Link
+                  href="/dashboard/schedule"
+                  className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-gray-600 transition-colors hover:bg-blue-50 hover:text-blue-600"
+                >
+                  <CalendarRange size={16} />
+                  <span className="hidden sm:inline">Semana</span>
+                </Link>
+                <Link
+                  href="/dashboard/availability"
+                  className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-gray-600 transition-colors hover:bg-blue-50 hover:text-blue-600"
+                >
+                  <Clock size={16} />
+                  <span className="hidden sm:inline">Disponibilidad</span>
+                </Link>
+              </>
             )}
             <Link
               href="/appointments"
