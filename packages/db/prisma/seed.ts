@@ -86,9 +86,21 @@ async function main() {
     skipDuplicates: true,
   });
 
+  const demoAdmin = await prisma.user.upsert({
+    where: { email: "admin@turnos.com" },
+    update: {},
+    create: {
+      name: "Admin TurnosApp",
+      email: "admin@turnos.com",
+      password: demoPassword,
+      role: "ADMIN" as Role,
+    },
+  });
+
   console.log("✅ Seed completado!");
   console.log("   Profesional:  demo@turnos.com / demo123");
   console.log("   Cliente:      cliente@demo.com / demo123");
+  console.log("   Admin:        admin@turnos.com / demo123");
 }
 
 main()
