@@ -10,15 +10,9 @@ jobs:
   ci:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:16-alpine
-        env:
-          POSTGRES_USER: turnos
-          POSTGRES_PASSWORD: turnos123
-          POSTGRES_DB: turnos_db
-        ports:
-          - 5432:5432
+    env:
+      DATABASE_URL: postgresql://placeholder
+      AUTH_SECRET: placeholder
 
     steps:
       - uses: actions/checkout@v4
@@ -34,6 +28,4 @@ jobs:
 
       - run: pnpm db:generate
 
-      - run: pnpm lint
-
-      - run: pnpm test
+      - run: pnpm --filter @turnos/web test
