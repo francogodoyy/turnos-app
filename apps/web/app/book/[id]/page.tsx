@@ -1,10 +1,24 @@
 import { prisma } from "@turnos/db";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
+import type { Metadata } from "next";
 import { Clock, Stethoscope } from "lucide-react";
 import BookingClient from "./booking-client";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const professional = await prisma.professional.findUnique({
+    where: { id },
+    include: { user: { select: { name: true } } },
+  });
+  if (!professional) return { title: "Profesional no encontrado — TurnosApp" };
+  return {
+    title: `Reservá con ${professional.user.name} — TurnosApp`,
+    description: `Agendá un turno con ${professional.user.name}${professional.specialty ? ` (${professional.specialty})` : ""}`,
+  };
+}
 
 export default async function BookPage({
   params,

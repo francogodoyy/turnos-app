@@ -1,6 +1,12 @@
 import { prisma } from "@turnos/db";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { ProfessionalsList } from "@/components/professionals-list";
+
+export const metadata: Metadata = {
+  title: "TurnosApp — Reservá turnos con profesionales",
+  description: "Encontrá al profesional que necesitás y agendá en segundos",
+};
 
 export const dynamic = "force-dynamic";
 

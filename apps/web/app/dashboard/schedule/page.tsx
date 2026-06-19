@@ -2,7 +2,12 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma, autoCompletePastAppointments } from "@turnos/db";
 import { BackButton } from "@/components/back-button";
+import type { Metadata } from "next";
 import { TZ_ARGENTINA, toTzDate, UTC_OFFSET_ARG } from "@turnos/shared";
+
+export const metadata: Metadata = {
+  title: "Calendario semanal — TurnosApp",
+};
 
 const STATUS_COLORS = {
   PENDING: "bg-amber-100 border-amber-300 text-amber-800",

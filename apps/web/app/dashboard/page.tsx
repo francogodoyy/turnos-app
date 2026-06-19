@@ -2,10 +2,15 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma, autoCompletePastAppointments } from "@turnos/db";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { AppointmentActions } from "@/components/appointment-actions";
 import { CalendarCheck, Clock, AlertCircle, CheckCircle, CalendarDays } from "lucide-react";
 import { TZ_ARGENTINA, todayRange } from "@turnos/shared";
 import { sendTomorrowReminders } from "@/lib/email";
+
+export const metadata: Metadata = {
+  title: "Dashboard — TurnosApp",
+};
 
 export const dynamic = "force-dynamic";
 

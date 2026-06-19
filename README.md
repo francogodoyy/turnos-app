@@ -134,7 +134,7 @@ pnpm dev
 | **Dashboard** — stats + pendientes | **Calendario** — grilla semanal |
 | **Disponibilidad** — administrá horarios | **Perfil** — especialidad, teléfono, foto |
 
-## 🧪 Decisiones técnicas
+##  Decisiones técnicas
 
 - **Monorepo**: Separación clara entre capa de datos, tipos compartidos y UI. Muestra madurez arquitectónica.
 - **Sin backend separado**: Todo vive en API Routes de Next.js para deploy simple en Vercel.

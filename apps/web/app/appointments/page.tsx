@@ -2,11 +2,16 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@turnos/db";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { BackButton } from "@/components/back-button";
 import { AppointmentActions } from "@/components/appointment-actions";
 import { ClientAppointmentActions } from "@/components/client-appointment-actions";
 import { CalendarDays, Clock, User, ChevronLeft, ChevronRight } from "lucide-react";
 import { TZ_ARGENTINA, toTzDate } from "@turnos/shared";
+
+export const metadata: Metadata = {
+  title: "Turnos — TurnosApp",
+};
 
 export const dynamic = "force-dynamic";
 

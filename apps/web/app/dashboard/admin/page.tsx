@@ -2,7 +2,12 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@turnos/db";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Users, UserCheck, CalendarDays, Activity } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Admin — TurnosApp",
+};
 
 export const dynamic = "force-dynamic";
 
