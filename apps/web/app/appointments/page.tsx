@@ -10,7 +10,7 @@ import { CalendarDays, Clock, User, ChevronLeft, ChevronRight } from "lucide-rea
 import { TZ_ARGENTINA, toTzDate } from "@turnos/shared";
 
 export const metadata: Metadata = {
-  title: "Turnos — TurnosApp",
+  title: "Turnos — Agendalo",
 };
 
 export const dynamic = "force-dynamic";

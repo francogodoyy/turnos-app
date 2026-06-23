@@ -90,7 +90,7 @@ async function main() {
     where: { email: "admin@turnos.com" },
     update: {},
     create: {
-      name: "Admin TurnosApp",
+      name: "Admin Agendalo",
       email: "admin@turnos.com",
       password: demoPassword,
       role: "ADMIN" as Role,

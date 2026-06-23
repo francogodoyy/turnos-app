@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import { TZ_ARGENTINA, toTzDate, UTC_OFFSET_ARG } from "@turnos/shared";
 
 export const metadata: Metadata = {
-  title: "Calendario semanal — TurnosApp",
+  title: "Calendario semanal — Agendalo",
 };
 
 const STATUS_COLORS = {

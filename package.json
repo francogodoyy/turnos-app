@@ -1,5 +1,5 @@
 {
-  "name": "turnos-app",
+  "name": "agendalo",
   "private": true,
   "scripts": {
     "dev": "turbo dev",

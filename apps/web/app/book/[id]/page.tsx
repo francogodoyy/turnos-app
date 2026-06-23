@@ -13,9 +13,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     where: { id },
     include: { user: { select: { name: true } } },
   });
-  if (!professional) return { title: "Profesional no encontrado — TurnosApp" };
+  if (!professional) return { title: "Profesional no encontrado — Agendalo" };
   return {
-    title: `Reservá con ${professional.user.name} — TurnosApp`,
+    title: `Reservá con ${professional.user.name} — Agendalo`,
     description: `Agendá un turno con ${professional.user.name}${professional.specialty ? ` (${professional.specialty})` : ""}`,
   };
 }
@@ -48,7 +48,7 @@ export default async function BookPage({
       <header className="border-b bg-white shadow-sm">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3">
           <a href="/" className="text-xl font-bold text-blue-600">
-            TurnosApp
+            Agendalo
           </a>
           {!session?.user && (
             <a

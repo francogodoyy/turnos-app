@@ -23,7 +23,7 @@ export default async function DashboardLayout({
             href="/dashboard"
             className="text-xl font-bold tracking-tight text-blue-600"
           >
-            TurnosApp
+            Agendalo
           </Link>
 
           <nav className="flex items-center gap-1 sm:gap-4 text-sm font-medium">

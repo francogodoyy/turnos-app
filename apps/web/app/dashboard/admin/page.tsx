@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import { Users, UserCheck, CalendarDays, Activity } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Admin — TurnosApp",
+  title: "Admin — Agendalo",
 };
 
 export const dynamic = "force-dynamic";

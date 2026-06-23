@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { ProfessionalsList } from "@/components/professionals-list";
 
 export const metadata: Metadata = {
-  title: "TurnosApp — Reservá turnos con profesionales",
+  title: "Agendalo — Reservá turnos con profesionales",
   description: "Encontrá al profesional que necesitás y agendá en segundos",
 };
 
@@ -23,7 +23,7 @@ export default async function HomePage() {
     <div className="min-h-screen bg-gray-50">
       <header className="border-b bg-white shadow-sm">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <h1 className="text-xl font-bold text-blue-600">TurnosApp</h1>
+          <h1 className="text-xl font-bold text-blue-600">Agendalo</h1>
           <nav className="flex items-center gap-4 text-sm">
             <Link
               href="/login"

@@ -1,4 +1,4 @@
-# TurnosApp · Gestión de Turnos Profesional
+# Agendalo · Gestión de Turnos Profesional
 
 > Plataforma SaaS de gestión de turnos construida con Next.js 15, Auth.js, Prisma y PostgreSQL. Proyecto de portafolio que demuestra arquitectura full-stack moderna.
 
@@ -45,7 +45,7 @@ Tests        Vitest + Playwright
 ##  Arquitectura
 
 ```
-turnos-app/
+agendalo/
 ├── apps/
 │   └── web/                  # Aplicación Next.js 15
 │       ├── app/
@@ -88,8 +88,8 @@ User ──→ Professional ──→ Availability
 # Requisitos: Node.js >= 20, pnpm >= 9
 
 # 1. Clonar e instalar
-git clone https://github.com/francogodoyy/turnos-app.git
-cd turnos-app
+git clone https://github.com/francogodoyy/agendalo.git
+cd agendalo
 pnpm install
 
 # 2. Variables de entorno

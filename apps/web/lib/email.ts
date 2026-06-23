@@ -7,7 +7,7 @@ function getResend() {
   return new Resend(key);
 }
 
-const FROM = process.env.EMAIL_FROM || "TurnosApp <onboarding@resend.dev>";
+const FROM = process.env.EMAIL_FROM || "Agendalo <onboarding@resend.dev>";
 
 function confirmationHtml({
   clientName,
@@ -39,7 +39,7 @@ function confirmationHtml({
       </p>
       <p style="margin:0;font-size:14px;color:#374151">${date} · ${time} · ${duration} min</p>
     </div>
-    <p style="font-size:13px;color:#9ca3af;margin:0">TurnosApp</p>
+    <p style="font-size:13px;color:#9ca3af;margin:0">Agendalo</p>
   </div>
 </body>
 </html>`;
@@ -70,7 +70,7 @@ function reminderHtml({
       </p>
       <p style="margin:0;font-size:14px;color:#374151">${date} · ${time}</p>
     </div>
-    <p style="font-size:13px;color:#9ca3af;margin:0">TurnosApp</p>
+    <p style="font-size:13px;color:#9ca3af;margin:0">Agendalo</p>
   </div>
 </body>
 </html>`;
@@ -90,7 +90,7 @@ export async function sendConfirmation(params: {
   await resend.emails.send({
     from: FROM,
     to: params.email,
-    subject: "Turno confirmado — TurnosApp",
+    subject: "Turno confirmado — Agendalo",
     html: confirmationHtml(params),
   });
 }
@@ -107,7 +107,7 @@ export async function sendReminder(params: {
   await resend.emails.send({
     from: FROM,
     to: params.email,
-    subject: "Recordatorio de turno — TurnosApp",
+    subject: "Recordatorio de turno — Agendalo",
     html: reminderHtml(params),
   });
 }

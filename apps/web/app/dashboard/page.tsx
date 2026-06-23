@@ -9,7 +9,7 @@ import { TZ_ARGENTINA, todayRange } from "@turnos/shared";
 import { sendTomorrowReminders } from "@/lib/email";
 
 export const metadata: Metadata = {
-  title: "Dashboard — TurnosApp",
+  title: "Dashboard — Agendalo",
 };
 
 export const dynamic = "force-dynamic";

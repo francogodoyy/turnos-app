@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test("landing page loads and shows professionals", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByText("TurnosApp")).toBeVisible();
+  await expect(page.getByText("Agendalo")).toBeVisible();
   await expect(page.getByText("Reservá turnos con profesionales")).toBeVisible();
 });
 
